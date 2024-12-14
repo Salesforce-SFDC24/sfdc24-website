@@ -1,0 +1,6 @@
+C:\Users\salam\OneDrive\Desktop\CLIPS DOCS>sfdx auth:device:login --alias fulldev1 --instance-url https://htv--fulldev1.sandbox.my.salesforce.com
+=== Action Required!
+
+Enter 9EY4YFMN device code in this verification URL: https://htv--fulldev1.sandbox.my.salesforce.com/setup/connect
+
+Login successful for abdus@sfdc24.com.fulldev1. You can now close the browser.
