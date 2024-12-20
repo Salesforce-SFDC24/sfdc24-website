@@ -1,10 +1,14 @@
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Python Assistant Backend is running!"
+    message = get_message()
+    return render_template("index.html", message=message)
+
+def get_message():
+    return "Hello from Python!"
 
 @app.route('/assistant', methods=['POST'])
 def assistant():
