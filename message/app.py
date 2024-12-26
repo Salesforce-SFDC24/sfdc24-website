@@ -9,10 +9,10 @@ def home():
 
 @app.route('/message')
 def message():
-    return jsonify({"message": "Hello from Python!"})
+    return jsonify({"message": "Hello from Python!!"})
 
 def get_message():
-    return "Hello from Python!"
+    return "Hello from Python!!"
 
 @app.route('/assistant', methods=['POST'])
 def assistant():
