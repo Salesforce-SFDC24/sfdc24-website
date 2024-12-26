@@ -7,6 +7,10 @@ def home():
     message = get_message()
     return render_template("index.html", message=message)
 
+@app.route('/message')
+def message():
+    return jsonify({"message": "Hello from Python!"})
+
 def get_message():
     return "Hello from Python!"
 
