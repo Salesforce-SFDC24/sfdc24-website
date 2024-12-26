@@ -21,7 +21,10 @@
 <body>
     <h1>Welcome to SFDC24</h1>
     <p>Your website is up and running!</p>
-    <p id="message">Loading message...</p>
+    <p id="message">
+        <span class="loading">Loading message...</span>
+        <img src="loading-spinner.gif" alt="Loading..." class="spinner">
+    </p>
     <script>
         fetch('/message')
             .then(response => response.json())
@@ -30,8 +33,8 @@
             })
             .catch(error => {
                 console.error('Error fetching message:', error);
-                document.getElementById('message').textContent = 'Failed to load message.';
-            });
+            document.getElementById('message').textContent = 'Failed to load message.';
+        });
     </script>
 </body>
 </html>
