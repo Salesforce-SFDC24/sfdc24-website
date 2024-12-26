@@ -1,11 +1,11 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, send_from_directory, request, jsonify
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
     message = get_message()
-    return render_template("index.html", message=message)
+    return send_from_directory('.', 'index.html')
 
 @app.route('/message')
 def message():
