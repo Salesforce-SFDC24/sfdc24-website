@@ -66,4 +66,4 @@ jobs:
         with:
           app-name: 'sfdc24-backend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_522A695B9BE04ED3BBBE42E5F9780488 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F83F1AEF56134288AE930E995D17E5C3 }}
