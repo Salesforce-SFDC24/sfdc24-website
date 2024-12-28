@@ -1,10 +1,13 @@
 from flask import Flask, send_from_directory, request, jsonify
 import openai
+import os
+
+
 
 app = Flask(__name__)
 
 # Set your OpenAI API key (replace with environment variable in production)
-openai.api_key = "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"
+openai.api_key = os.getenv("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")
 
 @app.route('/')
 def home():
