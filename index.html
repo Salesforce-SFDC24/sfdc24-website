@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Welcome to SFDC24</title>
+    <title>SFDC24 Assistant</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -16,25 +16,41 @@
         p {
             color: #666;
         }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
     <h1>Welcome to SFDC24</h1>
     <p>Your website is up and running!</p>
-    <p id="message">
-        <span class="loading">Loading message...</span>
-        <img src="loading-spinner.gif" alt="Loading..." class="spinner">
-    </p>
+
+    <h2>Ask the Assistant</h2>
+    <input type="text" id="userInput" placeholder="Enter your prompt">
+    <button onclick="sendPrompt()">Submit</button>
+
+    <p id="response"></p>
+
     <script>
-        fetch('/message')
+        function sendPrompt() {
+            const userInput = document.getElementById('userInput').value;
+            fetch('/assistant', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ input: userInput })
+            })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('message').textContent = data.message;
+                document.getElementById('response').textContent = data.response;
             })
             .catch(error => {
-                console.error('Error fetching message:', error);
-            document.getElementById('message').textContent = 'Failed to load message.';
-        });
+                console.error('Error:', error);
+                document.getElementById('response').textContent = 'Error communicating with assistant.';
+            });
+        }
     </script>
 </body>
 </html>
