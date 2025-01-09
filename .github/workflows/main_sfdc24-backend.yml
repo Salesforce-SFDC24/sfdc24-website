@@ -35,9 +35,6 @@ jobs:
       - name: Set OpenAI API key
         run: echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
 
-      - name: Run app.py
-        run: python app.py
-
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
 
