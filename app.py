@@ -34,7 +34,7 @@ def assistant():
                 size="1024x1024"
             )
             image_url = response['data'][0]['url']
-            assistant_response = f"![Generated Image]({image_url})"
+            assistant_response = f"<img src='{image_url}' alt='Generated Image' />"
         else:
             # Generate a response using OpenAI's GPT-4 API
             response = openai.ChatCompletion.create(
