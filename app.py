@@ -25,16 +25,27 @@ def assistant():
     """
     user_input = request.json.get('input')  # Capture the user input from the request
     try:
-        # Generate a response using OpenAI's GPT-4 API
-        response = openai.ChatCompletion.create(
-            model="gpt-4-turbo",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": user_input}
-            ]
-        )
-        # Extract the assistant's response
-        assistant_response = response['choices'][0]['message']['content']
+        # Check if the user is requesting image generation
+        if user_input.lower().startswith("generate image of"):
+            description = user_input[len("generate image of "):]
+            response = openai.Image.create(
+                prompt=description,
+                n=1,
+                size="1024x1024"
+            )
+            image_url = response['data'][0]['url']
+            assistant_response = f"![Generated Image]({image_url})"
+        else:
+            # Generate a response using OpenAI's GPT-4 API
+            response = openai.ChatCompletion.create(
+                model="gpt-4-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": user_input}
+                ]
+            )
+            # Extract the assistant's response
+            assistant_response = response['choices'][0]['message']['content']
     except Exception as e:
         # Handle errors with a user-friendly message
         assistant_response = f"Sorry, I couldn't process your request. Error: {str(e)}"
