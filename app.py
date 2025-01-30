@@ -30,8 +30,8 @@ def login():
     login_url = f'{salesforce_instance_url}/services/oauth2/token'
     params = {
         'grant_type': 'password',
-        'client_id': 'your-consumer-key',
-        'client_secret': 'your-consumer-secret',
+        'client_id': '31257ffd04df735f183b8f4db1ee2ea19b34c7e6',
+        'client_secret': '0194a0f04bcd000000002dff4131',
         'username': username,
         'password': password + salesforce_api_token
     }
