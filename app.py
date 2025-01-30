@@ -1,11 +1,15 @@
 from flask import Flask, send_from_directory, request, jsonify
 import openai
 import os
+import requests
 
 app = Flask(__name__)
 
 # Set your OpenAI API key from environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
+
+salesforce_api_token = os.getenv("SALESFORCE_API_TOKEN")
+salesforce_instance_url = 'https://business-saas-3412.lightning.force.com'
 
 @app.route('/')
 def home():
@@ -16,6 +20,45 @@ def home():
 def message():
     # Simple endpoint to test the server
     return jsonify({"message": "Welcome to SFDC24 Assistant!"})
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+    
+    login_url = f'{salesforce_instance_url}/services/oauth2/token'
+    params = {
+        'grant_type': 'password',
+        'client_id': 'your-consumer-key',
+        'client_secret': 'your-consumer-secret',
+        'username': username,
+        'password': password + salesforce_api_token
+    }
+    
+    response = requests.post(login_url, params=params)
+    
+    if response.status_code == 200:
+        access_token = response.json().get('access_token')
+        instance_url = response.json().get('instance_url')
+
+        # Fetch some Salesforce data using the access token
+        query_url = f'{instance_url}/services/data/v52.0/query/'
+        headers = {
+            'Authorization': f'Bearer {access_token}'
+        }
+        query_params = {
+            'q': 'SELECT Name FROM Account LIMIT 10'
+        }
+        data_response = requests.get(query_url, headers=headers, params=query_params)
+        
+        if data_response.status_code == 200:
+            salesforce_data = data_response.json()
+            return jsonify({"response": f"Salesforce Data: {salesforce_data}"})
+        else:
+            return jsonify({"response": "Failed to fetch Salesforce data"}), data_response.status_code
+    else:
+        return jsonify({"response": "Salesforce login failed"}), response.status_code
 
 @app.route('/assistant', methods=['POST'])
 def assistant():
