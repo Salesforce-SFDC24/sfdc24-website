@@ -30,11 +30,6 @@
     <h1>Welcome to SFDC24</h1>
     <p>This website is under construction!</p>
 
-    <h2>Salesforce Login</h2>
-    <input type="text" id="username" placeholder="Salesforce Username">
-    <input type="password" id="password" placeholder="Salesforce Password">
-    <button onclick="login()">Login</button>
-
     <h2>Ask the Assistant</h2>
     <input type="text" id="userInput" placeholder="Enter your prompt">
     <button onclick="sendPrompt()">Submit</button>
@@ -42,45 +37,16 @@
     <p id="response"></p>
 
     <script>
-        function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username: username, password: password })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const responseElement = document.getElementById('response');
-                responseElement.innerHTML = data.response;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('response').textContent = 'Error communicating with Salesforce.';
-            });
-        }
+        const socket = new WebSocket('wss://sfdc24.webpubsub.azure.com/client/hubs/Hub?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ3c3M6Ly9zZmRjMjQud2VicHVic3ViLmF6dXJlLmNvbS9jbGllbnQvaHVicy9IdWIiLCJpYXQiOjE3MzkxMzg4OTAsImV4cCI6MTczOTE0MjQ5MCwicm9sZSI6WyJ3ZWJwdWJzdWIuc2VuZFRvR3JvdXAiXX0.YjB5v1RzqgQIlWU6LUGNwgPbxDktIKajL1epB_j5f4s');
+
+        socket.onmessage = function(event) {
+            const responseElement = document.getElementById('response');
+            responseElement.innerHTML = event.data;
+        };
 
         function sendPrompt() {
             const userInput = document.getElementById('userInput').value;
-            fetch('/assistant', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ input: userInput })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const responseElement = document.getElementById('response');
-                responseElement.innerHTML = data.response;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('response').textContent = 'Error communicating with assistant.';
-            });
+            socket.send(JSON.stringify({ input: userInput }));
         }
     </script>
 </body>
